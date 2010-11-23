@@ -17,6 +17,7 @@ ofxKinect::ofxKinect(){
 	depthPixelsRaw			= NULL;
 	depthPixelsBack			= NULL;
 	rgbPixels		  		= NULL;
+	rgbaPixels		  		= NULL;
 	rgbPixelsBack			= NULL;
 	calibratedRGBPixels		= NULL;
 	distancePixels 			= NULL;
@@ -93,6 +94,28 @@ unsigned char * ofxKinect::getCalibratedRGBPixels(){
 	return calibratedRGBPixels;
 }
 
+
+unsigned char * ofxKinect::getRGBAPixels(){
+	ofxVec3f texcoord3d;
+	unsigned char * rgbaP = rgbaPixels;
+	for ( int y = 0; y < height; y++) {
+		for ( int x = 0; x < width; x++) {
+			texcoord3d.set(x,y,0);
+			texcoord3d = rgbDepthMatrix * texcoord3d ;
+			texcoord3d.x = ofClamp(texcoord3d.x,0,640);
+			texcoord3d.y = ofClamp(texcoord3d.y,0,480);
+			int pos = int(texcoord3d.y)*640+int(texcoord3d.x);
+			*rgbaP++ = rgbPixels[pos*3];
+			*rgbaP++ = rgbPixels[pos*3+1];
+			*rgbaP++ = rgbPixels[pos*3+2];
+      *rgbaP++ = depthPixels[y*640+x];
+		}
+	}
+	return rgbaPixels;
+}
+
+
+
 //------------------------------------
 ofTexture & ofxKinect::getTextureReference(){
 	if(!rgbTex.bAllocated()){
@@ -143,6 +166,8 @@ bool ofxKinect::init(bool setUseTexture){
 	distancePixels = new float[length];
 
 	rgbPixels = new unsigned char[length*3];
+  rgbaPixels = new unsigned char[length*4];
+  
 	rgbPixelsBack = new unsigned char[length*3];
 	calibratedRGBPixels = new unsigned char[length*3];
 	
@@ -152,6 +177,8 @@ bool ofxKinect::init(bool setUseTexture){
 	memset(distancePixels, 0, length*sizeof(float));
 
 	memset(rgbPixels, 0, length*3*sizeof(unsigned char));
+	memset(rgbaPixels, 0, length*4*sizeof(unsigned char));
+
 	memset(rgbPixelsBack, 0, length*3*sizeof(unsigned char));
 
 	if(bUseTexture){
@@ -174,6 +201,7 @@ void ofxKinect::clear(){
 		delete[] distancePixels; distancePixels = NULL;
 
 		delete[] rgbPixels; rgbPixels = NULL;
+    delete[] rgbaPixels; rgbaPixels = NULL;
 		delete[] rgbPixelsBack; rgbPixelsBack = NULL;
 	}
 
@@ -207,10 +235,10 @@ void ofxKinect::update(){
 				} else {
 					// using equation from https://github.com/OpenKinect/openkinect/wiki/Imaging-Information
 					distancePixels[k] = 100.f / (-0.00307f * depthPixelsBack[k] + 3.33f);
-					depthPixels[k] = (float) (2048 * 256) / (2048 - depthPixelsBack[k]);
+					// depthPixels[k] = (float) (2048 * 256) / (2048 - depthPixelsBack[k]);
 
 					// filter out some of the background noise
-					if(depthPixelsBack[k] < 1024) {
+					if(depthPixelsBack[k] < 2048) {
 						// invert and convert to 8 bit
 						depthPixels[k] = (float) ((2048 * 256) / (depthPixelsBack[k] - 2048));
 					}

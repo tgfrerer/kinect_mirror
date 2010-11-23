@@ -5,6 +5,8 @@
 
 #include "ofxOpenCv.h"
 #include "ofxKinect.h"
+#include "ofxShader.h"
+
 
 class testApp : public ofBaseApp
 {
@@ -14,7 +16,7 @@ class testApp : public ofBaseApp
 		void setup();
 		void update();
 		void draw();
-        void exit();
+    void exit();
 
 		void keyPressed  (int key);
 		void mouseMoved(int x, int y );
@@ -24,19 +26,26 @@ class testApp : public ofBaseApp
 		void windowResized(int w, int h);
 
 		ofxKinect kinect;
+    
+    ofxShader shader;
 
 		ofxCvColorImage		colorImg;
-
-		ofxCvGrayscaleImage 	grayImage;
+  
+		//ofxCvGrayscaleImage 	grayImage;
+    ofImage grayImage;
+  
+    ofImage testImage;
 		ofxCvGrayscaleImage 	grayBg;
 		ofxCvGrayscaleImage 	grayDiff;
 
-		ofxCvContourFinder 	contourFinder;
+    float rotX, rotY;
 
-		ofTexture			calibratedTex;
-
-		int 				threshold;
-		bool				bLearnBakground;
+		ofImage			calibratedTex;
+  
+    bool do_shader;
+  
+    int current_matrix_index;
+  
 };
 
 #endif

@@ -55,6 +55,9 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 		// get the rgb pixels corrected to match the depth frame
 		unsigned char * getCalibratedRGBPixels();
 
+    // get the rgb pixels with the depth frame as the alpha channel
+    unsigned char * getRGBAPixels();
+
 		/// get the distance in centimeters to a given point
 		float* getDistancePixels();
 		
@@ -96,6 +99,9 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 		
 		unsigned char *			depthPixels;
 		unsigned char *			rgbPixels;
+  
+    unsigned char *			rgbaPixels;
+  
 		unsigned char *			calibratedRGBPixels;
 		
 		unsigned short *		depthPixelsRaw;
