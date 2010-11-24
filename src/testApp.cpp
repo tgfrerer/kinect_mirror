@@ -7,7 +7,7 @@ void testApp::setup()
 	kinect.init();
 	kinect.setVerbose(false);
 	kinect.open();
-  do_shader = false;
+  do_shader = true;
 
 	colorImg.allocate(kinect.width, kinect.height);
 	// grayImage.allocate(kinect.width, kinect.height);
@@ -107,35 +107,93 @@ void testApp::draw()
     grayImage.getTextureReference().bind();
     shader.setUniformTexture("colourMap", testImage, 0);
 
-    shader.setUniform1f("depthScaling", 320.f * 2);
+    shader.setUniform1f("depthScaling", 320.f);
     
     shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()), cos(ofGetElapsedTimef()), 0);
     
     int step = 1;
 
-    glColor3f(1, 1,1);
-    glBegin(GL_POINTS);
-    for(int y = 0; y < h; y += step) {
-      for(int x = 0; x < w; x += step) {
-        ofPoint texCoords;
-        
-        texCoords = grayImage.getTextureReference().getCoordFromPoint(x, y);
-        glTexCoord2f(texCoords.x, texCoords.y);
-        glVertex2f(x, y);
-        
-        texCoords = grayImage.getTextureReference().getCoordFromPoint(x, y + step);
-        glTexCoord2f(texCoords.x, texCoords.y);
-        glVertex2f(x, y + step);
-        
-      }
-    }
-    glEnd();
+//    glColor3f(1, 1,1);
+//    glBegin(GL_LINES);
+//    for(int y = 0; y < h; y += step) {
+//      for(int x = 0; x < w; x += step) {
+//        ofPoint texCoords;
+//        
+//        texCoords = grayImage.getTextureReference().getCoordFromPoint(x, y);
+//        glTexCoord2f(texCoords.x, texCoords.y);
+//        glVertex2f(x, y);
+//        
+//        texCoords = grayImage.getTextureReference().getCoordFromPoint(x, y + step);
+//        glTexCoord2f(texCoords.x, texCoords.y);
+//        glVertex2f(x, y + step);
+//        
+//      }
+//    }
+//    glEnd();
+//    
+//    glColor3f(0.3, 0.3, 0.3);
+
+    step = 1;
     
-    glColor3f(0.3, 0.3, 0.3);
+    ofPoint texTL = grayImage.getTextureReference().getCoordFromPoint(0, 0);
+    ofPoint texBR = grayImage.getTextureReference().getCoordFromPoint(w, h);
     
-    ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
-    ofRotateX(mouseY);
-    ofRotateY(mouseX);
+    GLfloat grid2x2[2][2][3] = {
+      {{0.0, 0.0, 0.0}, {w, 0.0, 0.0}},
+      {{0.0, h, 0.0}, {w, h, 0.0}}
+    };
+
+//    GLfloat texpts[2][2][2] = {
+//      {{0.0,0.0},{0.0,texBR.x}},
+//      {{0.0,texBR.y},{texBR.x,texBR.y}}
+//    };
+
+    GLfloat texpts[2][2][2] = {
+      {{0.0,0.0},{texBR.x,0.0}},
+      {{0.0,texBR.y},{texBR.x,texBR.y}}
+    };
+    
+    
+    glEnable(GL_MAP2_TEXTURE_COORD_2);
+    glShadeModel(GL_FLAT);
+    glEnable(GL_MAP2_VERTEX_3);
+    glMap2f(GL_MAP2_VERTEX_3,
+            0.0, 1.0,  /* U ranges 0..1 */
+            3,         /* U stride, 3 floats per coord */
+            2,         /* U is 2nd order, ie. linear */
+            0.0, 1.0,  /* V ranges 0..1 */
+            2 * 3,     /* V stride, row is 2 coords, 3 floats per coord */
+            2,         /* V is 2nd order, ie linear */
+            &grid2x2[0][0][0]);  /* control points */
+
+//    glMap2f(GL_MAP2_TEXTURE_COORD_2, 0, texBR.x, 2, 2, 0, texBR.y, 4, 2, &texpts[0][0][0]);    
+
+//    glMap2f(GL_MAP2_TEXTURE_COORD_2, 
+//                                 0, 1.0, 
+//                                 0.25, 2, 
+//                                 0, 1.0, 
+//                                 12, 2, 
+//                                 &texpts[0][0][0]);
+    
+    glMap2f(GL_MAP2_TEXTURE_COORD_2, 0, 1, 2, 2, 
+                                     0, 1, 4, 2, 
+            &texpts[0][0][0]);
+    
+    
+//    glMap2f(GL_MAP2_TEXTURE_COORD_2, 0, 1, 2, 2, 
+//                                     0, 1, 4, 2, 
+//            &texpts[0][0][0]);
+    
+    
+    
+    glMapGrid2f(
+                w/step, 0.0, 1.0,
+                h/step, 0.0, 1.0);
+    
+    glEvalMesh2(GL_FILL,
+                0, w/step,   /* Starting at 0 mesh 5 steps (rows). */
+                0, h/step);  /* Starting at 0 mesh 6 steps (columns). */
+    
     
     shader.end();
     

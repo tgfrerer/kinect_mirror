@@ -225,7 +225,7 @@ void ofxKinect::update(){
 		bUpdateTex = true;
 	}
 
-	if( this->lock() ){
+	if( thisKinect->lock() ){
 
 		try{
 			for(int k = 0; k < width*height; k++){
