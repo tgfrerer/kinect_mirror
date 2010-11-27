@@ -25,6 +25,9 @@ class testApp : public ofBaseApp
 		void mouseReleased(int x, int y, int button);
 		void windowResized(int w, int h);
 
+    GLint render_mode;
+    int render_steps;
+  
 		ofxKinect kinect;
     
     ofxShader shader;

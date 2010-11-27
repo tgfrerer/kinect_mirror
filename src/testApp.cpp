@@ -18,10 +18,10 @@ void testApp::setup()
   
   testImage.allocate(kinect.width, kinect.height, GL_RGB);
 
-	ofSetFrameRate(30);
+	// ofSetFrameRate(30);
   
   ofSetLogLevel(OF_LOG_VERBOSE);
-	ofBackground(50, 50, 50);
+	ofBackground(0, 0, 0);
 	ofEnableAlphaBlending();
 	
 	ofSetVerticalSync(false);
@@ -35,17 +35,19 @@ void testApp::setup()
 	
 	shader.setup("shaders/shader1.vert", "shaders/shader1.frag"); 
 	
+  render_mode = GL_LINE;
+  
   glEnable(GL_DEPTH_TEST);
   
-  rotX = 0; rotY = 0;
+  rotX = rotY = 0;
   current_matrix_index = 0;
+  render_steps = 20;
   
 }
 
 //--------------------------------------------------------------
 void testApp::update()
 {
-	ofBackground(100, 100, 100);
 	kinect.update();
 
 
@@ -89,11 +91,15 @@ void testApp::draw()
 // ******** ********** 
   if (do_shader) {
   
+    ofDisableAlphaBlending();
     ofPushMatrix();
     
     shader.begin();
-      
-      
+    grayImage.getTextureReference().bind();
+    shader.setUniformTexture("colourMap", testImage, 0);
+    shader.setUniform1f("depthScaling", 320.f);
+    shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()), cos(ofGetElapsedTimef()), 0);
+    
     float w = grayImage.getWidth();
     float h = grayImage.getHeight();
     
@@ -104,37 +110,9 @@ void testApp::draw()
     glRotatef(-rotY, 1, 0, 0);
     glTranslatef(-w / 2, -h / 2, -320);
     
-    grayImage.getTextureReference().bind();
-    shader.setUniformTexture("colourMap", testImage, 0);
-
-    shader.setUniform1f("depthScaling", 320.f);
     
-    shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()), cos(ofGetElapsedTimef()), 0);
-    
-    int step = 1;
+    int step = render_steps;
 
-//    glColor3f(1, 1,1);
-//    glBegin(GL_LINES);
-//    for(int y = 0; y < h; y += step) {
-//      for(int x = 0; x < w; x += step) {
-//        ofPoint texCoords;
-//        
-//        texCoords = grayImage.getTextureReference().getCoordFromPoint(x, y);
-//        glTexCoord2f(texCoords.x, texCoords.y);
-//        glVertex2f(x, y);
-//        
-//        texCoords = grayImage.getTextureReference().getCoordFromPoint(x, y + step);
-//        glTexCoord2f(texCoords.x, texCoords.y);
-//        glVertex2f(x, y + step);
-//        
-//      }
-//    }
-//    glEnd();
-//    
-//    glColor3f(0.3, 0.3, 0.3);
-
-    step = 1;
-    
     ofPoint texTL = grayImage.getTextureReference().getCoordFromPoint(0, 0);
     ofPoint texBR = grayImage.getTextureReference().getCoordFromPoint(w, h);
     
@@ -143,16 +121,10 @@ void testApp::draw()
       {{0.0, h, 0.0}, {w, h, 0.0}}
     };
 
-//    GLfloat texpts[2][2][2] = {
-//      {{0.0,0.0},{0.0,texBR.x}},
-//      {{0.0,texBR.y},{texBR.x,texBR.y}}
-//    };
-
     GLfloat texpts[2][2][2] = {
       {{0.0,0.0},{texBR.x,0.0}},
       {{0.0,texBR.y},{texBR.x,texBR.y}}
-    };
-    
+    };    
     
     glEnable(GL_MAP2_TEXTURE_COORD_2);
     glShadeModel(GL_FLAT);
@@ -166,33 +138,19 @@ void testApp::draw()
             2,         /* V is 2nd order, ie linear */
             &grid2x2[0][0][0]);  /* control points */
 
-//    glMap2f(GL_MAP2_TEXTURE_COORD_2, 0, texBR.x, 2, 2, 0, texBR.y, 4, 2, &texpts[0][0][0]);    
-
-//    glMap2f(GL_MAP2_TEXTURE_COORD_2, 
-//                                 0, 1.0, 
-//                                 0.25, 2, 
-//                                 0, 1.0, 
-//                                 12, 2, 
-//                                 &texpts[0][0][0]);
     
     glMap2f(GL_MAP2_TEXTURE_COORD_2, 0, 1, 2, 2, 
                                      0, 1, 4, 2, 
             &texpts[0][0][0]);
     
     
-//    glMap2f(GL_MAP2_TEXTURE_COORD_2, 0, 1, 2, 2, 
-//                                     0, 1, 4, 2, 
-//            &texpts[0][0][0]);
-    
-    
-    
     glMapGrid2f(
                 w/step, 0.0, 1.0,
                 h/step, 0.0, 1.0);
     
-    glEvalMesh2(GL_FILL,
-                0, w/step,   /* Starting at 0 mesh 5 steps (rows). */
-                0, h/step);  /* Starting at 0 mesh 6 steps (columns). */
+    glEvalMesh2(render_mode,
+                0, w/step,   /* Starting at 0 mesh w/step steps (rows). */
+                0, h/step);  /* Starting at 0 mesh h/step (columns). */
     
     
     shader.end();
@@ -248,19 +206,26 @@ void testApp::keyPressed (int key)
   ofxMatrix4x4 mx = kinect.getRGBDepthMatrix();
 
   
+  GLint render_modes[3]={GL_LINE, GL_FILL, GL_POINT};
+  
+  
   switch (key)
 	{
 		case ' ':
 			do_shader ^= true;
 			break;
+    case 'r':
+      render_mode = render_modes[(int)ofRandom(0,3)];
+      break;
+
     case 'f':
         ofToggleFullscreen();
       break;
-		case '+': current_matrix_index = (current_matrix_index+1) % 16;
+		case '+': render_steps++;
 			break;
-		case '-': current_matrix_index = (current_matrix_index + 15) % 16;
+    case '-': 
+      render_steps>1 ? render_steps--: render_steps;
 			break;
-
     case '0':
       mx.getPtr()[current_matrix_index]+=.00001f;
       break;
