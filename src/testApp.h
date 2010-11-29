@@ -35,9 +35,9 @@ class testApp : public ofBaseApp
 		ofxCvColorImage		colorImg;
   
 		//ofxCvGrayscaleImage 	grayImage;
-    ofImage grayImage;
+    ofImage videoImage;
+    ofImage depthImage;
   
-    ofImage testImage;
 		ofxCvGrayscaleImage 	grayBg;
 		ofxCvGrayscaleImage 	grayDiff;
 

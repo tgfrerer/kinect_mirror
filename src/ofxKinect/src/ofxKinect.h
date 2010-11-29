@@ -36,6 +36,9 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 		float getDistanceAt(int x, int y);
 		float getDistanceAt(const ofPoint & p);
 
+    unsigned short getDepthPixelBackAt(int x, int y);
+  
+  
 		ofColor	getColorAt(int x, int y);
 		ofColor getColorAt(const ofPoint & p);
 
@@ -60,6 +63,7 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 
 		/// get the distance in centimeters to a given point
 		float* getDistancePixels();
+    unsigned char* getDistancePixelsRGBA();
 		
 		/// get the rgb texture
 		ofTexture &		getTextureReference();
@@ -99,14 +103,14 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 		
 		unsigned char *			depthPixels;
 		unsigned char *			rgbPixels;
-  
     unsigned char *			rgbaPixels;
   
 		unsigned char *			calibratedRGBPixels;
 		
 		unsigned short *		depthPixelsRaw;
 		float * 				distancePixels;
-        
+    unsigned char * distancePixelsRGBA;
+  
     private:
 
 		libusb_device_handle* kinectDev;	// kinect device handle

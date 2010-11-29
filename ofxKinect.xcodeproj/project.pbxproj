@@ -39,7 +39,7 @@
 		E49DA7BE10CD396F0006B5A8 /* freeimage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E49DA7BD10CD396F0006B5A8 /* freeimage.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */; };
-		E4C2422B10CC554B004149E2 /* openFrameworks.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2421E10CC549C004149E2 /* openFrameworks.a */; };
+		E4C2422B10CC554B004149E2 /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2421E10CC549C004149E2 /* openFrameworksDebug.a */; };
 		E4C2424710CC5A17004149E2 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424410CC5A17004149E2 /* AppKit.framework */; };
 		E4C2424810CC5A17004149E2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424510CC5A17004149E2 /* Cocoa.framework */; };
 		E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424610CC5A17004149E2 /* IOKit.framework */; };
@@ -91,18 +91,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		22E7D6411295F821005B4ADF /* ofxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxShader.cpp; path = "openFrameworks-git/addons/ofxShader/src/ofxShader.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22E7D6421295F821005B4ADF /* ofxShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxShader.h; path = "openFrameworks-git/addons/ofxShader/src/ofxShader.h"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22F110301295988400EF49B0 /* shader1.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = shader1.frag; path = "openFrameworks-git/apps/dev/ofxKinect_shader/bin/data/shaders/shader1.frag"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22F110311295988400EF49B0 /* shader1.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shader1.geom; path = "openFrameworks-git/apps/dev/ofxKinect_shader/bin/data/shaders/shader1.geom"; sourceTree = SYSTEM_DEVELOPER_DIR; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		22F110321295988400EF49B0 /* shader1.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = shader1.vert; path = "openFrameworks-git/apps/dev/ofxKinect_shader/bin/data/shaders/shader1.vert"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22FEFD8B1299636000E672E9 /* install.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = install.xml; path = "openFrameworks-git/addons/ofxXmlSettings/install.xml"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22FEFD8D1299636000E672E9 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxml.cpp; path = "openFrameworks-git/addons/ofxXmlSettings/libs/tinyxml.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22FEFD8E1299636000E672E9 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinyxml.h; path = "openFrameworks-git/addons/ofxXmlSettings/libs/tinyxml.h"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22FEFD8F1299636000E672E9 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlerror.cpp; path = "openFrameworks-git/addons/ofxXmlSettings/libs/tinyxmlerror.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22FEFD901299636000E672E9 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlparser.cpp; path = "openFrameworks-git/addons/ofxXmlSettings/libs/tinyxmlparser.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22FEFD921299636000E672E9 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxXmlSettings.cpp; path = "openFrameworks-git/addons/ofxXmlSettings/src/ofxXmlSettings.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
-		22FEFD931299636000E672E9 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxXmlSettings.h; path = "openFrameworks-git/addons/ofxXmlSettings/src/ofxXmlSettings.h"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22E7D6411295F821005B4ADF /* ofxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxShader.cpp; path = "oF-git/addons/ofxShader/src/ofxShader.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22E7D6421295F821005B4ADF /* ofxShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxShader.h; path = "oF-git/addons/ofxShader/src/ofxShader.h"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22F110301295988400EF49B0 /* shader1.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = shader1.frag; path = "oF-git/apps/dev/ofxKinect_shader/bin/data/shaders/shader1.frag"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22F110311295988400EF49B0 /* shader1.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shader1.geom; path = "oF-git/apps/dev/ofxKinect_shader/bin/data/shaders/shader1.geom"; sourceTree = SYSTEM_DEVELOPER_DIR; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		22F110321295988400EF49B0 /* shader1.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = shader1.vert; path = "oF-git/apps/dev/ofxKinect_shader/bin/data/shaders/shader1.vert"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22FEFD8B1299636000E672E9 /* install.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = install.xml; path = "oF-git/addons/ofxXmlSettings/install.xml"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22FEFD8D1299636000E672E9 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxml.cpp; path = "oF-git/addons/ofxXmlSettings/libs/tinyxml.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22FEFD8E1299636000E672E9 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinyxml.h; path = "oF-git/addons/ofxXmlSettings/libs/tinyxml.h"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22FEFD8F1299636000E672E9 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlerror.cpp; path = "oF-git/addons/ofxXmlSettings/libs/tinyxmlerror.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22FEFD901299636000E672E9 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlparser.cpp; path = "oF-git/addons/ofxXmlSettings/libs/tinyxmlparser.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22FEFD921299636000E672E9 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxXmlSettings.cpp; path = "oF-git/addons/ofxXmlSettings/src/ofxXmlSettings.cpp"; sourceTree = SYSTEM_DEVELOPER_DIR; };
+		22FEFD931299636000E672E9 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxXmlSettings.h; path = "oF-git/addons/ofxXmlSettings/src/ofxXmlSettings.h"; sourceTree = SYSTEM_DEVELOPER_DIR; };
 		307525F011CA84AF007EB8FF /* Instructions.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Instructions.txt; sourceTree = "<group>"; };
 		307525F311CA84AF007EB8FF /* ofxThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxThread.cpp; sourceTree = "<group>"; };
 		307525F411CA84AF007EB8FF /* ofxThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxThread.h; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 		E481566E128F69E7007363C2 /* libusb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libusb.h; path = src/ofxKinect/libs/libusb/osx/include/libusb.h; sourceTree = SOURCE_ROOT; };
 		E4815670128F69E7007363C2 /* usb-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "usb-1.0.a"; path = "src/ofxKinect/libs/libusb/osx/libs/usb-1.0.a"; sourceTree = SOURCE_ROOT; };
 		E49DA7BD10CD396F0006B5A8 /* freeimage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = freeimage.a; path = ../../../libs/FreeImage/lib/osx/freeimage.a; sourceTree = SOURCE_ROOT; };
-		E4B69B5B0A3A1756003C02F2 /* ofxKinect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ofxKinect.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* ofxKinectDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ofxKinectDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -209,7 +209,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4C2422B10CC554B004149E2 /* openFrameworks.a in Frameworks */,
+				E4C2422B10CC554B004149E2 /* openFrameworksDebug.a in Frameworks */,
 				E45BE0AA0E8CC67C009D7055 /* GLee.a in Frameworks */,
 				E45BE2E40E8CC69C009D7055 /* rtAudio.a in Frameworks */,
 				E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */,
@@ -247,7 +247,7 @@
 				22E7D6401295F821005B4ADF /* src */,
 			);
 			name = ofxShader;
-			path = "openFrameworks-git/addons/ofxShader";
+			path = "oF-git/addons/ofxShader";
 			sourceTree = SYSTEM_DEVELOPER_DIR;
 		};
 		22E7D6401295F821005B4ADF /* src */ = {
@@ -257,7 +257,7 @@
 				22E7D6421295F821005B4ADF /* ofxShader.h */,
 			);
 			name = src;
-			path = "openFrameworks-git/addons/ofxShader/src";
+			path = "oF-git/addons/ofxShader/src";
 			sourceTree = SYSTEM_DEVELOPER_DIR;
 		};
 		22F1102F1295988400EF49B0 /* shaders */ = {
@@ -268,7 +268,7 @@
 				22F110321295988400EF49B0 /* shader1.vert */,
 			);
 			name = shaders;
-			path = "openFrameworks-git/apps/dev/ofxKinect_shader/bin/data/shaders";
+			path = "oF-git/apps/dev/ofxKinect_shader/bin/data/shaders";
 			sourceTree = SYSTEM_DEVELOPER_DIR;
 		};
 		22FEFD8A1299636000E672E9 /* ofxXmlSettings */ = {
@@ -279,7 +279,7 @@
 				22FEFD911299636000E672E9 /* src */,
 			);
 			name = ofxXmlSettings;
-			path = "openFrameworks-git/addons/ofxXmlSettings";
+			path = "oF-git/addons/ofxXmlSettings";
 			sourceTree = SYSTEM_DEVELOPER_DIR;
 		};
 		22FEFD8C1299636000E672E9 /* libs */ = {
@@ -291,7 +291,7 @@
 				22FEFD901299636000E672E9 /* tinyxmlparser.cpp */,
 			);
 			name = libs;
-			path = "openFrameworks-git/addons/ofxXmlSettings/libs";
+			path = "oF-git/addons/ofxXmlSettings/libs";
 			sourceTree = SYSTEM_DEVELOPER_DIR;
 		};
 		22FEFD911299636000E672E9 /* src */ = {
@@ -301,7 +301,7 @@
 				22FEFD931299636000E672E9 /* ofxXmlSettings.h */,
 			);
 			name = src;
-			path = "openFrameworks-git/addons/ofxXmlSettings/src";
+			path = "oF-git/addons/ofxXmlSettings/src";
 			sourceTree = SYSTEM_DEVELOPER_DIR;
 		};
 		307525EE11CA84AF007EB8FF /* ofxThread */ = {
@@ -691,7 +691,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
-				E4B69B5B0A3A1756003C02F2 /* ofxKinect.app */,
+				E4B69B5B0A3A1756003C02F2 /* ofxKinectDebug.app */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4C2422310CC54B6004149E2 /* openFrameworks */,
@@ -715,7 +715,7 @@
 		E4C2421710CC549C004149E2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E4C2421E10CC549C004149E2 /* openFrameworks.a */,
+				E4C2421E10CC549C004149E2 /* openFrameworksDebug.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -846,7 +846,7 @@
 			);
 			name = ofxKinect;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* ofxKinect.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* ofxKinectDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -880,10 +880,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		E4C2421E10CC549C004149E2 /* openFrameworks.a */ = {
+		E4C2421E10CC549C004149E2 /* openFrameworksDebug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = openFrameworks.a;
+			path = openFrameworksDebug.a;
 			remoteRef = E4C2421D10CC549C004149E2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

@@ -21,7 +21,8 @@ ofxKinect::ofxKinect(){
 	rgbPixelsBack			= NULL;
 	calibratedRGBPixels		= NULL;
 	distancePixels 			= NULL;
-
+  distancePixelsRGBA  = NULL;
+  
 	bNeedsUpdate			= false;
 	bUpdateTex				= false;
 
@@ -75,6 +76,25 @@ unsigned short 	* ofxKinect::getRawDepthPixels(){
 float* ofxKinect::getDistancePixels() {
 	return distancePixels;
 }
+
+unsigned char* ofxKinect::getDistancePixelsRGBA() {
+  typedef unsigned char u_char;
+  u_char * pDepthRGBA = distancePixelsRGBA;
+
+  int length = 640*480;
+  
+  for (int i=0; i<length; i++) {
+      int distance = int((2048.f / float(depthPixelsBack[i])) * 2048.f);
+    
+    // (tmpDistance == 2047) ? tmpDistance = 0 : tmpDistance -= 2048;
+    *pDepthRGBA++ = distance / 256;   
+    *pDepthRGBA++ = distance % 256;   
+    *pDepthRGBA++ = 0xff;
+    *pDepthRGBA++ = 0xff;
+  }
+  return distancePixelsRGBA;
+}
+
 
 unsigned char * ofxKinect::getCalibratedRGBPixels(){
 	ofxVec3f texcoord3d;
@@ -167,6 +187,7 @@ bool ofxKinect::init(bool setUseTexture){
 
 	rgbPixels = new unsigned char[length*3];
   rgbaPixels = new unsigned char[length*4];
+  distancePixelsRGBA = new unsigned char[length *4];
   
 	rgbPixelsBack = new unsigned char[length*3];
 	calibratedRGBPixels = new unsigned char[length*3];
@@ -271,6 +292,12 @@ void ofxKinect::update(){
 float ofxKinect::getDistanceAt(int x, int y) {
 	return distancePixels[y * width + x];
 }
+
+//------------------------------------
+unsigned short ofxKinect::getDepthPixelBackAt(int x, int y) {
+	return depthPixelsBack[y * width + x];
+}
+
 
 //------------------------------------
 float ofxKinect::getDistanceAt(const ofPoint & p) {

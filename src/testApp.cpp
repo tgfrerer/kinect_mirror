@@ -10,14 +10,15 @@ void testApp::setup()
   do_shader = true;
 
 	colorImg.allocate(kinect.width, kinect.height);
-	// grayImage.allocate(kinect.width, kinect.height);
+	// videoImage.allocate(kinect.width, kinect.height);
 	grayBg.allocate(kinect.width, kinect.height);
 	grayDiff.allocate(kinect.width, kinect.height);
 
 	calibratedTex.allocate(kinect.width, kinect.height,GL_RGB);
   
-  testImage.allocate(kinect.width, kinect.height, GL_RGB);
-
+  videoImage.allocate(kinect.width, kinect.height, GL_RGB);
+  depthImage.allocate(kinect.width, kinect.height, GL_RGBA);
+  
 	// ofSetFrameRate(30);
   
   ofSetLogLevel(OF_LOG_VERBOSE);
@@ -29,13 +30,13 @@ void testApp::setup()
   ofDisableArbTex();
   ofSetMinMagFilters(GL_NEAREST, GL_NEAREST);
   
-  grayImage.loadImage("displacement.png");
+  // videoImage.loadImage("displacement.png");
   // solid.loadImage("solid.png");
   calibratedTex.loadImage("solid.png");
 	
 	shader.setup("shaders/shader1.vert", "shaders/shader1.frag"); 
 	
-  render_mode = GL_LINE;
+  render_mode = GL_FILL;
   
   glEnable(GL_DEPTH_TEST);
   
@@ -50,18 +51,17 @@ void testApp::update()
 {
 	kinect.update();
 
-
-  testImage.setFromPixels(kinect.getRGBAPixels(), kinect.width, kinect.height,OF_IMAGE_COLOR_ALPHA,true);
+  videoImage.setFromPixels(kinect.getPixels(), kinect.width, kinect.height,OF_IMAGE_COLOR,true);
+  depthImage.setFromPixels(kinect.getDistancePixelsRGBA(),kinect.width, kinect.height,OF_IMAGE_COLOR_ALPHA,true);
   
-  
-  // grayImage.setFromPixels(kinect.getRGBAPixels(), kinect.width, kinect.height, GL_RGBA, true);
+  // videoImage.setFromPixels(kinect.getRGBAPixels(), kinect.width, kinect.height, GL_RGBA, true);
   //calibratedTex.loadData(kinect.getCalibratedRGBPixels(),640,480,GL_RGB);
   // calibratedTex.setFromPixels(kinect.getCalibratedRGBPixels(),kinect.width,kinect.height,GL_RGB);
   
 	//rgbaMixture.allocate(w,h,GL_RGBA);
 	// rgbaMixture.loadData(pixels, w,h,GL_RGBA);
 
-  //grayImage.setFromPixels(pixels, kinect.width, kinect.height, GL_RGBA, true);
+  //videoImage.setFromPixels(pixels, kinect.width, kinect.height, GL_RGBA, true);
 	
   
   
@@ -71,39 +71,38 @@ void testApp::update()
 void testApp::draw()
 {
 
-
   //  kinect.drawDepth(10, 10, 400, 300);
   //  kinect.drawDepth(360, 10);
-  //  grayImage.draw(360,20);
+  //  videoImage.draw(360,20);
 	//  grayBg.draw(20,280, 320, 180);
   //  grayDiff.draw(450, 350, 400, 300);
-
-  
 
 	ofSetColor(0xffffff);
   //	contourFinder.draw(450, 350, 400, 300);
 	ofSetColor(0xffffff);
 	//  calibratedTex.draw(10,350,400,300);
 
-
-   
-
+  
 // ******** ********** 
   if (do_shader) {
   
     ofDisableAlphaBlending();
     ofPushMatrix();
-    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);
     shader.begin();
-    grayImage.getTextureReference().bind();
-    shader.setUniformTexture("colourMap", testImage, 0);
-    shader.setUniform1f("depthScaling", 320.f);
+
+    videoImage.getTextureReference().bind();
+    depthImage.getTextureReference().bind();
+    
+    shader.setUniformTexture("depthMap", depthImage, 0);
+//    shader.setUniform1f("depthScaling", 320.f);
     shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()), cos(ofGetElapsedTimef()), 0);
     
-    float w = grayImage.getWidth();
-    float h = grayImage.getHeight();
+    float w = videoImage.getWidth();
+    float h = videoImage.getHeight();
     
-    glTranslatef(ofGetWidth() / 2, ofGetHeight() / 2, 0);
+    glTranslatef(ofGetWidth() / 2, ofGetHeight() / 2, -100);
     rotX = ofLerp(mouseX, rotX, 0.5);
     rotY = ofLerp(mouseY, rotY, 0.5);
     glRotatef(rotX, 0, 1, 0);
@@ -113,8 +112,8 @@ void testApp::draw()
     
     int step = render_steps;
 
-    ofPoint texTL = grayImage.getTextureReference().getCoordFromPoint(0, 0);
-    ofPoint texBR = grayImage.getTextureReference().getCoordFromPoint(w, h);
+    ofPoint texTL = videoImage.getTextureReference().getCoordFromPoint(0, 0);
+    ofPoint texBR = videoImage.getTextureReference().getCoordFromPoint(w, h);
     
     GLfloat grid2x2[2][2][3] = {
       {{0.0, 0.0, 0.0}, {w, 0.0, 0.0}},
@@ -160,8 +159,6 @@ void testApp::draw()
     // non-3d View:
 
     ofxMatrix4x4 mx = kinect.getRGBDepthMatrix();
-
-    
     
     glColor3f(1, 1, 1);
     char matrixStr[1024];
@@ -173,13 +170,19 @@ void testApp::draw()
     ofFill();
     glColor3f(1, 1, 1);
     for (int i=0;i<4; i++) {
-      sprintf(matrixStr, "%12.6f %12.6f %12.6f %12.6f", mx.getPtr()[i*4], mx.getPtr()[i*4+1], mx.getPtr()[i*4+2],mx.getPtr()[i*4+3]);
+      sprintf(matrixStr, "%12.6f %12.6f %12.6f %12.6f >> %d", 
+                  mx.getPtr()[i*4], 
+                  mx.getPtr()[i*4+1], 
+                  mx.getPtr()[i*4+2],
+                  mx.getPtr()[i*4+3], 
+                  kinect.getDepthPixelBackAt(100+10*i,100+10*i));
       ofDrawBitmapString(matrixStr, 20, 670 + i*20);
     }
     
     glColor3f(1, 1, 1);
-    testImage.draw(10,10,640,480);
-    kinect.drawDepth(10+320+10,10);
+    videoImage.draw(10,10,320,240);
+    depthImage.draw(20+320,10, 320, 240);
+    
   }
 
 	
