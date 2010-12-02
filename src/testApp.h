@@ -4,7 +4,7 @@
 #include "ofMain.h"
 
 #include "ofxOpenCv.h"
-#include "ofxKinect.h"
+#include "ofxKinectExtended.h"
 #include "ofxShader.h"
 
 
@@ -28,7 +28,7 @@ class testApp : public ofBaseApp
     GLint render_mode;
     int render_steps;
   
-		ofxKinect kinect;
+		ofxKinectExtended kinect;
     
     ofxShader shader;
 

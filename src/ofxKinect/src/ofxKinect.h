@@ -18,8 +18,8 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 		ofxKinect();
 		virtual ~ofxKinect();
 
-		/// is the current frame new?
-		bool isFrameNew() {return true;}
+		/// are the current frames new?
+		bool isFrameNew();
         
 		/// open the connection and start grabbing images
 		bool open();
@@ -29,16 +29,18 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
         
 		/// initialize resources, must be called before open()
 		bool init(bool bTexture=true);
+		
+		bool setCameraTiltAngle(float angleInDegrees);
         
+		/// updates the pixel buffers and textures - make sure to call this to update to the latetst incoming frames
+		void update(); 
+		
 		/// clear resources
 		void clear();
 	
 		float getDistanceAt(int x, int y);
 		float getDistanceAt(const ofPoint & p);
 
-    unsigned short getDepthPixelBackAt(int x, int y);
-  
-  
 		ofColor	getColorAt(int x, int y);
 		ofColor getColorAt(const ofPoint & p);
 
@@ -47,6 +49,12 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 
 		ofxMatrix4x4 getRGBDepthMatrix();
 		void setRGBDepthMatrix(const ofxMatrix4x4 & matrix);
+		
+		float 			getHeight();
+		float 			getWidth();
+
+		ofPoint			getRawAccel();
+		ofPoint			getMksAccel();		
 		
 		/// get the pixels of the most recent rgb frame
 		unsigned char	* getPixels();
@@ -58,18 +66,23 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 		// get the rgb pixels corrected to match the depth frame
 		unsigned char * getCalibratedRGBPixels();
 
-    // get the rgb pixels with the depth frame as the alpha channel
-    unsigned char * getRGBAPixels();
-
 		/// get the distance in centimeters to a given point
 		float* getDistancePixels();
-    unsigned char* getDistancePixelsRGBA();
 		
 		/// get the rgb texture
 		ofTexture &		getTextureReference();
 		
 		/// get the greyscale depth texture
 		ofTexture &		getDepthTextureReference();
+		
+		/**
+			set the near value of the pixels in the greyscale depth image to white?
+			
+			bEnabled = true : pixels close to the camera are brighter
+			bEnabled = false: pixels closer to the camera are darker (default)
+		**/
+		void enableDepthNearValueWhite(bool bEnabled=true);
+		bool isDepthNearValueWhite();
 		
 		void 			setVerbose(bool bTalkToMe);
         
@@ -79,16 +92,6 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 		
 		void 			drawDepth(float x, float y, float w, float h);
 		void 			drawDepth(float x, float y);
-		
-		/**
-			\brief	updates the pixel buffers and textures
-				
-				make sure to call this to update to the latetst incoming frames
-		*/
-		void update();
-
-		float 			getHeight();
-		float 			getWidth();
 
 		const static int	width = 640;
 		const static int	height = 480;
@@ -103,29 +106,36 @@ class ofxKinect : public ofBaseVideo, protected ofxThread{
 		
 		unsigned char *			depthPixels;
 		unsigned char *			rgbPixels;
-    unsigned char *			rgbaPixels;
-  
 		unsigned char *			calibratedRGBPixels;
 		
 		unsigned short *		depthPixelsRaw;
 		float * 				distancePixels;
-    unsigned char * distancePixelsRGBA;
-  
-    private:
-
-		libusb_device_handle* kinectDev;	// kinect device handle
 		
-		unsigned short *	depthPixelsBack;	// depth back
-		unsigned char *		rgbPixelsBack;		// rgb back
+		ofPoint rawAccel;
+		ofPoint mksAccel;
+        
+		float targetTiltAngleDeg;
+		bool bTiltNeedsApplying;
+		
+  unsigned short *	depthPixelsBack;	// depth back
+  unsigned char *		rgbPixelsBack;		// rgb back
+
+private:
+
+		freenect_context *	kinectContext;	// kinect context handle
+		freenect_device * 	kinectDevice;	// kinect device handle
+		
 		
 		bool bNeedsUpdate;
 		bool bUpdateTex;
 		
+		bool bDepthNearValueWhite;
+		
 		ofxMatrix4x4		rgbDepthMatrix;
 
 		// libfreenect callbacks
-		static void grabDepthFrame(uint16_t *buf, int width, int height);
-		static void grabRgbFrame(uint8_t *buf, int width, int height);
+		static void grabDepthFrame(freenect_device *dev, void *depth, uint32_t timestamp);
+		static void grabRgbFrame(freenect_device *dev, freenect_pixel *rgb, uint32_t timestamp);
     
 		// thread function
 		void threadedFunction();
