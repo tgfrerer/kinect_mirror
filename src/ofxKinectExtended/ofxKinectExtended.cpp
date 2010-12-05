@@ -75,9 +75,19 @@ unsigned char* ofxKinectExtended::getDistancePixelsRGBA() {
   u_char * pDepthRGBA = distancePixelsRGBA;
   
   int length = 640*480;
+  const float k1 = 0.1236;
+  const float k2 = 2842.5;
+  const float k3 = 1.1863;
+  const float k4 = 0.0370;
   
   for (int i=0; i<length; i++) {
     int distance = int((2048.f / float(ofxKinect::depthPixelsBack[i])) * 2048.f);
+    
+    // this should be done with a LUT, this is an inefficient way to do it
+//    float distanceF = k1 * tanf(depthPixelsBack[i] / k2 + k3) - k4; // calculate in meters
+//    distanceF *= 5000; // convert to millimeters
+//
+//    int distance = int(distanceF);
     
     // (tmpDistance == 2047) ? tmpDistance = 0 : tmpDistance -= 2048;
     *pDepthRGBA++ = distance / 256;   

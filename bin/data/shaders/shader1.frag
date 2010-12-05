@@ -6,9 +6,10 @@
 //}
 
 varying vec4 color;
+varying float depthZ;
 
 void main(void) {
-  // if(color.a <= 0.5) discard;
+  // if(depthZ < 500 || depthZ > 800) discard;
   // gl_FragColor = gl_Color;    
   gl_FragColor = vec4(color.xyz, 1.0);
 }

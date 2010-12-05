@@ -479,16 +479,16 @@ void ofxKinect::threadedFunction(){
 		freenect_get_mks_accel(kinectDevice, &dx, &dy, &dz);
 		mksAccel.set(dx, dy, dz);
 		
-//		printf("\r raw acceleration: %4d %4d %4d  mks acceleration: %4f %4f %4f", ax, ay, az, dx, dy, dz);
+    //		printf("\r raw acceleration: %4d %4d %4d  mks acceleration: %4f %4f %4f", ax, ay, az, dx, dy, dz);
 	}
 
-//TODO: uncomment these when they are implemented in freenect	
-//	freenect_stop_depth(kinectDevice);
-//	freenect_stop_rgb(kinectDevice);
-	freenect_set_led(kinectDevice, LED_YELLOW);
-
-//	freenect_close_device(kinectDevice);
-//	freenect_shutdown(kinectContext);
+  //TODO: uncomment these when they are implemented in freenect	
+  //	freenect_stop_depth(kinectDevice);
+  //	freenect_stop_rgb(kinectDevice);
+	freenect_set_led(kinectDevice, LED_GREEN);
+  
+  //	freenect_close_device(kinectDevice);
+  //	freenect_shutdown(kinectContext);
 	
 	ofLog(OF_LOG_VERBOSE, "ofxKinect: Connection closed");
 }

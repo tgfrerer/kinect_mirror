@@ -96,13 +96,18 @@ void testApp::draw()
     depthImage.getTextureReference().bind();
     
     shader.setUniformTexture("depthMap", depthImage, 0);
-//    shader.setUniform1f("depthScaling", 320.f);
+    // shader.setUniformTexture("videoMap", videoImage, 1);
+    // shader.setUniform1f("depthScaling", 320.f);
     shader.setUniform3f("lightDir", sin(ofGetElapsedTimef()), cos(ofGetElapsedTimef()), 0);
     
     float w = videoImage.getWidth();
     float h = videoImage.getHeight();
     
     glTranslatef(ofGetWidth() / 2, ofGetHeight() / 2, -100);
+
+    //    rotX = ofLerp(ofGetElapsedTimef()*60, rotX, 0.5);
+    //    rotY = ofLerp(0, rotY, 0.5);
+
     rotX = ofLerp(mouseX, rotX, 0.5);
     rotY = ofLerp(mouseY, rotY, 0.5);
     glRotatef(rotX, 0, 1, 0);
@@ -220,7 +225,13 @@ void testApp::keyPressed (int key)
     case 'r':
       render_mode = render_modes[(int)ofRandom(0,3)];
       break;
-
+    case 'a':
+      current_matrix_index = current_matrix_index == 15 ? current_matrix_index=0 : current_matrix_index = current_matrix_index+1;
+      break;
+    case 's':
+      current_matrix_index = current_matrix_index == 0 ? current_matrix_index=15 : current_matrix_index = current_matrix_index-1;
+      break;
+      
     case 'f':
         ofToggleFullscreen();
       break;
